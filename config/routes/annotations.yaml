@@ -1,0 +1,13 @@
+user:
+    resource: ../../src/User/Action/
+    type: annotation
+customer:
+    resource: ../../src/Customer/Action/
+    type: annotation
+address:
+    resource: ../../src/Address/Action/
+    type: annotation
+
+kernel:
+    resource: ../../src/Kernel.php
+    type: annotation
