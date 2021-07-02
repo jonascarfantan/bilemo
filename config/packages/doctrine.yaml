@@ -30,7 +30,7 @@ doctrine:
                 alias: Address
             Smartphone:
                 is_bundle: false
-                type: annotation
+                type: attribute
                 dir: '%kernel.project_dir%/src/Smartphone/Entity/'
                 prefix: 'App\Smartphone'
                 alias: Smartphone

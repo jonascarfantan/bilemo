@@ -27,3 +27,19 @@ services:
         tags: [ 'controller.service_arguments' ]
         arguments:
           [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\User\Action\GetUser:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\User\Action\StoreUser:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\User\Action\UpdateUser:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\User\Action\DeleteUser:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]

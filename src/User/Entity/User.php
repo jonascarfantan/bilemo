@@ -12,7 +12,14 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotNull;
 
+#[
+    UniqueEntity(fields: 'username' ,message: 'Pseudo déjà utilisé.'),
+    UniqueEntity(fields: 'email' ,message: 'Adresse email déjà utilisé.')
+]
 #[Entity(repositoryClass: UserRepository::class, readOnly: false)]
 class User
 {
@@ -34,6 +41,10 @@ class User
     #[Column(type: 'string', length: 32, nullable: false), ]
     private string $role;
     
+    #[
+        Email(message: 'Adresse email invalide.'),
+        NotNull(message: 'Adresse email requise.')
+    ]
     #[Column(type: 'string', length: 32, unique: true, nullable: false)]
     private string $email;
     
@@ -59,7 +70,7 @@ class User
     private ?\DateTimeImmutable $created_at;
     
     #[Column(type: 'datetime_immutable', nullable: true)]
-    private ?\DateTimeImmutable $updated_at;
+    private ?\DateTimeImmutable $updated_at = null;
     
     
     public function getId()
