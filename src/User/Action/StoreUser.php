@@ -2,6 +2,8 @@
 
 namespace App\User\Action;
 
+use App\Address\Helper as AddressHelper;
+use App\User\Helper as UserHelper;
 use App\User\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,17 +30,11 @@ class StoreUser {
     #[Route(path: '/users/store', name: 'user.store.json', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
-        $new_user = new User();
-        foreach($request->request as $key => $val) {
-            $setter = 'set' . ucfirst($key);
-            $new_user->$setter($val);
-        }
-        $new_user->setCreatedAt(new \DateTimeImmutable('now'));
+        $parameters = json_decode($request->getContent(), true);
+        $address = AddressHelper::createAddress($parameters['address'], $this->entityManager);
+        $user = UserHelper::createUser($parameters['user'], $address, $this->entityManager);
         
-        $this->entityManager->persist($new_user);
-        $this->entityManager->flush();
-        
-        $json = $this->serializer->serialize($new_user, 'json');
+        $json = $this->serializer->serialize($user, 'json');
         
         return new Response($json, 200, [
             "content-type" => "application/json"

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\User\Action;
+namespace App\Customer\Action;
 
 use App\Address\Helper as AddressHelper;
 use App\User\Entity\User;
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class UpdateUser {
+class UpdateCustomer {
     
     public function __construct(
         EntityManagerInterface $entityManager,

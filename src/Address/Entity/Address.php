@@ -29,14 +29,14 @@ class Address
     #[Column(type: 'integer', length: 255, nullable: false)]
     private string $street_number;
     
-    #[Column(type: 'string', length: 255)]
-    private ?string $comp_address;
+    #[Column(type: 'string', length: 255, nullable: true)]
+    private ?string $comp_address = null;
     
     #[Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $created_at;
     
     #[Column(type: 'datetime_immutable', nullable: true)]
-    private ?\DateTimeImmutable $updated_at;
+    private ?\DateTimeImmutable $updated_at = null;
     
     
     public function getId()

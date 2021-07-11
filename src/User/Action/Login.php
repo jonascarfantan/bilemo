@@ -2,10 +2,9 @@
 
 namespace App\User\Action;
 
-use App\Address\Helper as AddressHelper;
 use App\User\Entity\User;
-use App\User\Helper;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,8 +14,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class UpdateUser {
-    
+class Login extends AbstractController
+{
     public function __construct(
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer
@@ -27,20 +26,20 @@ class UpdateUser {
         $this->entityManager = $entityManager;
     }
     
-    #[Route(path: '/users/{user_id}/update', name: 'user.update.json', methods: ['PUT'])]
-    public function __invoke(Request $request, int $user_id): Response
+    #[Route(path: '/login', name: 'login.json', methods: ['POST'])]
+    public function __invoke(Request $request): Response
     {
-        $parameters = json_decode($request->getContent(), true);
-        $user = $this->entityManager->getRepository(User::class)->find($user_id);
-        $address = $user->getAddress();
-        
-        if(!empty($parameters['address'])) {
-            $address = AddressHelper::updateAddress($address->getId(), $parameters['address'], $this->entityManager);
-        }
     
-        $updated_user = Helper::updateUser($user, $parameters['user'],$address ?? null, $this->entityManager);
+        $user = $this->getUser();
+
+        $credentials = [
+            // The getUserIdentifier() method was introduced in Symfony 5.3.
+            // In previous versions it was called getUsername()
+            'username' => $user->getUserIdentifier(),
+            'roles' => $user->getRole(),
+        ];
         
-        $json = $this->serializer->serialize($updated_user, 'json');
+        $json = $this->serializer->serialize($credentials, 'json');
         
         return new Response($json, 200, [
             "content-type" => "application/json"

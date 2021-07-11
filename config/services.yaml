@@ -43,3 +43,28 @@ services:
         tags: [ 'controller.service_arguments' ]
         arguments:
           [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\User\Action\Login:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+
+    App\Customer\Action\GetCustomers:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\Customer\Action\GetCustomer:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\Customer\Action\DeleteCustomer:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\Customer\Action\StoreCustomer:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+    App\Customer\Action\UpdateCustomer:
+        tags: [ 'controller.service_arguments' ]
+        arguments:
+          [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]

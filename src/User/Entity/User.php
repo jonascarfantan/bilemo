@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotNull;
 
@@ -21,7 +23,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
     UniqueEntity(fields: 'email' ,message: 'Adresse email déjà utilisé.')
 ]
 #[Entity(repositoryClass: UserRepository::class, readOnly: false)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[Id, Column(type: 'integer'), GeneratedValue]
     private int $id;
@@ -72,6 +74,36 @@ class User
     #[Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
     
+    
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+    
+    public function getSalt() {
+        // TODO: Implement getSalt() method.
+    }
+    
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): string {
+        return $this->role;
+    }
+    
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
     
     public function getId()
     {
@@ -205,7 +237,7 @@ class User
         return $this->address;
     }
     
-    public function setAddress($address): self {
+    public function setAddress(Address $address): self {
         $this->address = $address;
         
         return $this;

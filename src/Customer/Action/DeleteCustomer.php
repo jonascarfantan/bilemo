@@ -1,10 +1,8 @@
 <?php
 
-namespace App\User\Action;
+namespace App\Customer\Action;
 
-use App\Address\Helper as AddressHelper;
 use App\User\Entity\User;
-use App\User\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class UpdateUser {
+class DeleteCustomer {
     
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -27,20 +25,15 @@ class UpdateUser {
         $this->entityManager = $entityManager;
     }
     
-    #[Route(path: '/users/{user_id}/update', name: 'user.update.json', methods: ['PUT'])]
-    public function __invoke(Request $request, int $user_id): Response
+    #[Route(path: '/users/{id}/delete', name: 'user.delete.json', methods: ['DELETE'])]
+    public function __invoke(Request $request, $id): Response
     {
-        $parameters = json_decode($request->getContent(), true);
-        $user = $this->entityManager->getRepository(User::class)->find($user_id);
-        $address = $user->getAddress();
+        $user = $this->entityManager->getRepository(User::class)->find($id);
         
-        if(!empty($parameters['address'])) {
-            $address = AddressHelper::updateAddress($address->getId(), $parameters['address'], $this->entityManager);
-        }
-    
-        $updated_user = Helper::updateUser($user, $parameters['user'],$address ?? null, $this->entityManager);
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
         
-        $json = $this->serializer->serialize($updated_user, 'json');
+        $json = json_encode(['message' => 'User successfully deleted']);
         
         return new Response($json, 200, [
             "content-type" => "application/json"
