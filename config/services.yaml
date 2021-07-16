@@ -23,6 +23,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Users
     App\User\Action\GetUsers:
         tags: [ 'controller.service_arguments' ]
         arguments:
@@ -43,11 +45,14 @@ services:
         tags: [ 'controller.service_arguments' ]
         arguments:
           [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
+
+    # Authentication
     App\User\Action\Login:
         tags: [ 'controller.service_arguments' ]
         arguments:
           [ '@Doctrine\ORM\EntityManagerInterface', '@serializer' ]
 
+    # Customers
     App\Customer\Action\GetCustomers:
         tags: [ 'controller.service_arguments' ]
         arguments:

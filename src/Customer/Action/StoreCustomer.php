@@ -3,8 +3,8 @@
 namespace App\Customer\Action;
 
 use App\Address\Helper as AddressHelper;
-use App\User\Helper as UserHelper;
-use App\User\Entity\User;
+use App\Customer\Helper as CustomerHelper;
+use App\Customer\Entity\Customer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,14 +27,14 @@ class StoreCustomer {
         $this->entityManager = $entityManager;
     }
     
-    #[Route(path: '/users/store', name: 'user.store.json', methods: ['POST'])]
+    #[Route(path: '/customers/store', name: 'customer.store.json', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
         $parameters = json_decode($request->getContent(), true);
         $address = AddressHelper::createAddress($parameters['address'], $this->entityManager);
-        $user = UserHelper::createUser($parameters['user'], $address, $this->entityManager);
+        $customer = CustomerHelper::createCustomer($parameters['customer'], $address, $this->entityManager);
         
-        $json = $this->serializer->serialize($user, 'json');
+        $json = $this->serializer->serialize($customer, 'json');
         
         return new Response($json, 200, [
             "content-type" => "application/json"

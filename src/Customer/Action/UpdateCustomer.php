@@ -3,8 +3,9 @@
 namespace App\Customer\Action;
 
 use App\Address\Helper as AddressHelper;
+use App\Customer\Entity\Customer;
 use App\User\Entity\User;
-use App\User\Helper;
+use App\Customer\Helper as CustomerHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,18 +28,18 @@ class UpdateCustomer {
         $this->entityManager = $entityManager;
     }
     
-    #[Route(path: '/users/{user_id}/update', name: 'user.update.json', methods: ['PUT'])]
-    public function __invoke(Request $request, int $user_id): Response
+    #[Route(path: '/customers/{customer_id}/update', name: 'user.update.json', methods: ['PUT'])]
+    public function __invoke(Request $request, int $customer_id): Response
     {
         $parameters = json_decode($request->getContent(), true);
-        $user = $this->entityManager->getRepository(User::class)->find($user_id);
+        $user = $this->entityManager->getRepository(Customer::class)->find($customer_id);
         $address = $user->getAddress();
         
         if(!empty($parameters['address'])) {
             $address = AddressHelper::updateAddress($address->getId(), $parameters['address'], $this->entityManager);
         }
     
-        $updated_user = Helper::updateUser($user, $parameters['user'],$address ?? null, $this->entityManager);
+        $updated_user = CustomerHelper::updateCustomer($user, $parameters['customer'],$address ?? null, $this->entityManager);
         
         $json = $this->serializer->serialize($updated_user, 'json');
         

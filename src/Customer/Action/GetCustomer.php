@@ -30,7 +30,7 @@ class GetCustomer {
     {
         $customer = $this->entityManager->getRepository(Customer::class)->find($id);
         $json = $this->serializer->serialize($customer, 'json');
-        dd($customer);
+        
         return new Response($json, 200, [
             "content-type" => "application/json"
         ]);

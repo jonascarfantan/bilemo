@@ -2,6 +2,7 @@
 
 namespace App\Customer\Action;
 
+use App\Customer\Entity\Customer;
 use App\User\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,12 +26,12 @@ class DeleteCustomer {
         $this->entityManager = $entityManager;
     }
     
-    #[Route(path: '/users/{id}/delete', name: 'user.delete.json', methods: ['DELETE'])]
+    #[Route(path: '/customers/{id}/delete', name: 'customer.delete.json', methods: ['DELETE'])]
     public function __invoke(Request $request, $id): Response
     {
-        $user = $this->entityManager->getRepository(User::class)->find($id);
+        $customer = $this->entityManager->getRepository(Customer::class)->find($id);
         
-        $this->entityManager->remove($user);
+        $this->entityManager->remove($customer);
         $this->entityManager->flush();
         
         $json = json_encode(['message' => 'User successfully deleted']);

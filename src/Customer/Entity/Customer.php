@@ -23,20 +23,20 @@ class Customer
     #[Id, Column(type: 'integer'), GeneratedValue]
     private $id;
     
-    #[OneToOne(targetEntity: Address::class), JoinColumn(name: 'address_id', referencedColumnName: "id", onDelete: 'cascade')]
-    private Address $address;
-    
-    #[OneToMany(mappedBy: 'customer', targetEntity: User::class)]
-    private Collection $users;
-    
     #[Column(type:'string', length: 64, unique: true, nullable: false)]
-    private string $buisness_name;
+    private string $business_name;
     
     #[Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $created_at;
     
     #[Column(type: 'datetime_immutable', nullable: true)]
-    private ?\DateTimeImmutable $updated_at;
+    private ?\DateTimeImmutable $updated_at = null;
+    
+    #[OneToOne(targetEntity: Address::class), JoinColumn(name: 'address_id', referencedColumnName: "id", onDelete: 'cascade')]
+    private Address $address;
+    
+    #[OneToMany(mappedBy: 'customer', targetEntity: User::class)]
+    private Collection $users;
     
     #[Pure] public function __construct()
     {
@@ -48,12 +48,12 @@ class Customer
         return $this->id;
     }
     
-    public function getBuisnessName(): string {
-        return $this->buisness_name;
+    public function getBusinessName(): string {
+        return $this->business_name;
     }
     
-    public function setBuisnessName($buisness_name): self {
-        $this->buisness_name = $buisness_name;
+    public function setBusinessName($business_name): self {
+        $this->business_name = $business_name;
         
         return $this;
     }
