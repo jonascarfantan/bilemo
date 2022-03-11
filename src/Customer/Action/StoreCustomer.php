@@ -27,9 +27,10 @@ class StoreCustomer {
         $this->entityManager = $entityManager;
     }
     
-    #[Route(path: '/customers/store', name: 'customer.store.json', methods: ['POST'])]
+    #[Route(path: '/customers/add', name: 'customer.add.json', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
+        dd('yo');
         $parameters = json_decode($request->getContent(), true);
         $address = AddressHelper::createAddress($parameters['address'], $this->entityManager);
         $customer = CustomerHelper::createCustomer($parameters['customer'], $address, $this->entityManager);
